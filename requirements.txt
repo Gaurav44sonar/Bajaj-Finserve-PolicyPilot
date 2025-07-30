@@ -1,6 +1,8 @@
 fastapi
-uvicorn
-requests
+uvicorn[standard]
+aiohttp
+aiofiles
+pydantic
 langchain
 langchain-community
 langchain-google-genai
@@ -8,4 +10,6 @@ PyMuPDF
 sentence-transformers
 torch
 google-generativeai
-aiofiles
+PyMuPDF
+faiss-cpu
+huggingface-hub
