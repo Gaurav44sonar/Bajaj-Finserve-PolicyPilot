@@ -5,7 +5,7 @@ aiofiles
 pydantic
 langchain
 langchain-community
+langchain-google-genai  # Remove if not using Gemini
 PyMuPDF
 faiss-cpu
 huggingface-hub
-

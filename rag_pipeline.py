@@ -221,7 +221,7 @@ from functools import lru_cache
 from typing import List
 from langchain_community.document_loaders import PyMuPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.vectorstores import FAISS
+from langchain_community.vectorstores import FAISS
 from langchain.prompts import PromptTemplate
 from langchain.chains import RetrievalQA
 from langchain_google_genai import ChatGoogleGenerativeAI
