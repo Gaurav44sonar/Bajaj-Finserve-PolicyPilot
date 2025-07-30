@@ -231,8 +231,12 @@ from huggingface_hub import InferenceClient
 
 load_dotenv()
 # Load Gemini API Key from file
-with open("API_KEY.txt", "r") as f:
-    GEMINI_API_KEY = f.read().strip()
+# with open("API_KEY.txt", "r") as f:
+#     GEMINI_API_KEY = f.read().strip()
+
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+if not GEMINI_API_KEY:
+    raise RuntimeError("Missing GEMINI_API_KEY environment variable")
 
 genai.configure(api_key=GEMINI_API_KEY)
 
