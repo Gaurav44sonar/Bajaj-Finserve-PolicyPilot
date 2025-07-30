@@ -12,6 +12,7 @@ import aiohttp
 from concurrent.futures import ThreadPoolExecutor
 import os
 import time
+import uvicorn
 
 app = FastAPI()
 
@@ -198,3 +199,6 @@ async def shutdown_event():
     # Shutdown thread pool
     executor.shutdown(wait=True)
     print("Cleanup completed")
+
+if __name__ == "__main__":
+    uvicorn.run("main:app", host="0.0.0.0", port=int(os.environ.get("PORT", 8000)), reload=False)
