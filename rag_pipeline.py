@@ -316,18 +316,46 @@ class RAGPipeline:
             temperature=0.0
         )
 
-        custom_prompt = PromptTemplate(
-            input_variables=["context", "question"],
-            template="""
-You are a professional insurance document analyst. Your task is to answer user queries based strictly on the provided insurance policy document context.
+#         custom_prompt = PromptTemplate(
+#             input_variables=["context", "question"],
+#             template="""
+# You are a professional insurance document analyst. Your task is to answer user queries based strictly on the provided insurance policy document context.
 
-Guidelines:
-- Use ONLY the information in the context.
-- Be accurate and formal.
-- Include policy details (terms, monetary values, legal references).
-- Start with "Yes" or "No" if applicable.
-- If info not present, say: "Information not available in the provided document."
-- Limit to ONE sentence.
+# Guidelines:
+# - Use ONLY the information in the context.
+# - Be accurate and formal.
+# - Include policy details (terms, monetary values, legal references).
+# - Start with "Yes" or "No" if applicable.
+# - If info not present, say: "Information not available in the provided document."
+# - Limit to ONE sentence.
+
+# Context:
+# {context}
+
+# Question:
+# {question}
+
+# Answer:
+# """
+#         )
+
+        custom_prompt = PromptTemplate(
+    input_variables=["context", "question"],
+    template="""
+You are a professional insurance document analyst.
+
+Your task is to answer user questions based strictly on the context from the provided insurance policy document.
+
+Follow these rules:
+
+- Only use information explicitly mentioned in the context.
+- Do NOT make assumptions or use external knowledge.
+- If the answer is clearly stated, begin with "Yes" or "No" followed by a precise explanation.
+- If the answer is not clearly stated, reply with: "Information not available in the provided document."
+- Include exact details if present: durations, monetary limits, conditions, or exclusions.
+- Avoid vague or partial answers.
+- Respond in a clear, natural tone.
+- Your answer must be in **ONE** concise sentence.
 
 Context:
 {context}
@@ -337,7 +365,7 @@ Question:
 
 Answer:
 """
-        )
+)
 
         self.qa_chain = RetrievalQA.from_chain_type(
             llm=self.llm_model,
