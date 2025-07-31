@@ -246,7 +246,7 @@ HF_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 
 # ✅ Custom LangChain-compatible wrapper
 class HFInferenceEmbeddings(Embeddings):
-    def __init__(self, model: str, token: str):
+    def _init_(self, model: str, token: str):
         self.client = InferenceClient(model=model, token=token)
 
     def embed_documents(self, texts: List[str]) -> List[List[float]]:
@@ -257,7 +257,7 @@ class HFInferenceEmbeddings(Embeddings):
 
 
 class RAGPipeline:
-    def __init__(self, pdf_path, use_cache=True):
+    def _init_(self, pdf_path, use_cache=True):
         self.pdf_path = pdf_path
         self.use_cache = use_cache
         self.cache_dir = "rag_cache"
