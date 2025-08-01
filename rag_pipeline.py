@@ -341,32 +341,60 @@ class RAGPipeline:
 
     ## New prompt template with more advancements
         
+#         custom_prompt = PromptTemplate(
+#     input_variables=["context", "question"],
+#     template="""
+# You are a highly specialized AI assistant trained to analyze and extract information from insurance, legal, and compliance documents.
+
+# Your task is to answer user questions based **strictly and only** on the retrieved context provided below.
+# You are an expert insurance policy assistant. Your task is to answer the user's question using only the content provided in the policy document context.
+
+
+
+# ---
+# RETRIEVED CONTEXT:
+# {context}
+# ---
+
+# QUESTION:
+# {question}
+
+# GUIDELINES:
+# 1. Analyze the entire context and identify **only the most relevant parts** related to the question.
+# 2. Provide a precise, focused, and fact-based answer using **exact language, figures, terms, and conditions** found in the document.
+# 3. Convert number words (e.g., "thirty", "fifty-six") into digits (e.g., "30", "56") in your answer.
+# 4. Do **not summarize the entire context** — answer based only on **parts directly relevant** to the question.
+# 5. If multiple sections apply, mention their section numbers clearly (e.g., "As per Context 2.4 and 5.1...").
+# 6. If the question cannot be answered using the provided context, respond exactly with: **"Information not available in the provided document."**
+# 7. Use exact policy terms and values when available.
+
+# 8. Avoid assumptions, opinions, or any unsupported statements.
+# 9. Respond in one complete, formal sentence.
+# 10. Keep the response short and to the point — ideally under 50 words unless essential information must be conveyed.
+
+# ANSWER:
+# """
+# )
+
         custom_prompt = PromptTemplate(
     input_variables=["context", "question"],
     template="""
-You are a highly specialized AI assistant trained to analyze and extract information from insurance, legal, and compliance documents.
+You are an expert insurance policy assistant. Your task is to answer the user's question using only the content provided in the policy document context.
 
-Your task is to answer user questions based **strictly and only** on the retrieved context provided below.
+Instructions:
+- Respond in one complete, formal sentence.
+- Use clear, human-readable language appropriate for both legal and customer communication.
+- Do not explain or elaborate beyond the document.
+- Use exact policy terms and values when available.
+- If the answer is not found in the context, reply: "The document does not provide information about this."
 
----
-RETRIEVED CONTEXT:
+Context:
 {context}
----
 
-QUESTION:
+Question:
 {question}
 
-GUIDELINES:
-1. Analyze the entire context and identify **only the most relevant parts** related to the question.
-2. Provide a precise, focused, and fact-based answer using **exact language, figures, terms, and conditions** found in the document.
-3. Convert number words (e.g., "thirty", "fifty-six") into digits (e.g., "30", "56") in your answer.
-4. Do **not summarize the entire context** — answer based only on **parts directly relevant** to the question.
-5. If multiple sections apply, mention their section numbers clearly (e.g., "As per Context 2.4 and 5.1...").
-6. If the question cannot be answered using the provided context, respond exactly with: **"Information not available in the provided document."**
-7. Avoid assumptions, opinions, or any unsupported statements.
-8. Keep the response short and to the point — ideally under 50 words unless essential information must be conveyed.
-
-ANSWER:
+Answer:
 """
 )
         self.qa_chain = RetrievalQA.from_chain_type(
