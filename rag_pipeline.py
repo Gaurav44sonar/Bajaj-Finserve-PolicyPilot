@@ -339,34 +339,36 @@ class RAGPipeline:
 # """
 #         )
 
+    ## New prompt template with more advancements
+        
         custom_prompt = PromptTemplate(
     input_variables=["context", "question"],
     template="""
-You are a professional insurance document analyst.
+You are a highly specialized AI assistant trained to analyze and extract information from insurance, legal, and compliance documents.
 
-Your task is to answer user questions based strictly on the context from the provided insurance policy document.
+Your task is to answer user questions based **strictly and only** on the retrieved context provided below.
 
-Follow these rules:
-
-- Only use information explicitly mentioned in the context.
-- Do NOT make assumptions or use external knowledge.
-- If the answer is clearly stated, begin with "Yes" or "No" followed by a precise explanation.
-- If the answer is not clearly stated, reply with: "Information not available in the provided document."
-- Include exact details if present: durations, monetary limits, conditions, or exclusions.
-- Avoid vague or partial answers.
-- Respond in a clear, natural tone.
-- Your answer must be in **ONE** concise sentence.
-
-Context:
+---
+RETRIEVED CONTEXT:
 {context}
+---
 
-Question:
+QUESTION:
 {question}
 
-Answer:
+GUIDELINES:
+1. Analyze the entire context and identify **only the most relevant parts** related to the question.
+2. Provide a precise, focused, and fact-based answer using **exact language, figures, terms, and conditions** found in the document.
+3. Convert number words (e.g., "thirty", "fifty-six") into digits (e.g., "30", "56") in your answer.
+4. Do **not summarize the entire context** — answer based only on **parts directly relevant** to the question.
+5. If multiple sections apply, mention their section numbers clearly (e.g., "As per Context 2.4 and 5.1...").
+6. If the question cannot be answered using the provided context, respond exactly with: **"Information not available in the provided document."**
+7. Avoid assumptions, opinions, or any unsupported statements.
+8. Keep the response short and to the point — ideally under 50 words unless essential information must be conveyed.
+
+ANSWER:
 """
 )
-
         self.qa_chain = RetrievalQA.from_chain_type(
             llm=self.llm_model,
             chain_type="stuff",
