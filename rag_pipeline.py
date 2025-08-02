@@ -376,27 +376,52 @@ class RAGPipeline:
 # """
 # )
 
+#         custom_prompt = PromptTemplate(
+#     input_variables=["context", "question"],
+#     template="""
+# You are an expert insurance policy assistant. Your task is to answer the user's question using only the content provided in the policy document context.
+
+# Instructions:
+# - Respond in one complete, formal sentence.
+# - Use clear, human-readable language appropriate for both legal and customer communication.
+# - Do not explain or elaborate beyond the document.
+# - Use exact policy terms and values when available.
+# - If the answer is not found in the context, reply: "The document does not provide information about this."
+
+# Context:
+# {context}
+
+# Question:
+# {question}
+
+# Answer:
+# """
+# )
+
+        # 1. Custom prompt Shooter
         custom_prompt = PromptTemplate(
     input_variables=["context", "question"],
     template="""
-You are an expert insurance policy assistant. Your task is to answer the user's question using only the content provided in the policy document context.
+You are an expert document analyst specializing in insurance, legal, and compliance policy. You will answer questions using ONLY the provided context from the document retrieval system.
 
-Instructions:
-- Respond in one complete, formal sentence.
-- Use clear, human-readable language appropriate for both legal and customer communication.
-- Do not explain or elaborate beyond the document.
-- Use exact policy terms and values when available.
-- If the answer is not found in the context, reply: "The document does not provide information about this."
-
-Context:
+RETRIEVED CONTEXT:
 {context}
 
-Question:
-{question}
+QUESTION: {question}
 
-Answer:
+INSTRUCTIONS:
+1. Answer the question using ONLY information from the retrieved context above
+2. Be precise and factual - include specific numbers, dates, percentages, and conditions when mentioned
+3. If the context contains relevant information, provide a comprehensive answer
+4. If the information is insufficient or not available in the context, clearly state "Information not available in the provided document"
+5. Structure your answer clearly and logically
+6. Reference specific context sections when making claims (e.g., "According to Context 1...")
+7. Keep your response focused and under 600 words
+
+ANSWER:
 """
 )
+
         self.qa_chain = RetrievalQA.from_chain_type(
             llm=self.llm_model,
             chain_type="stuff",
