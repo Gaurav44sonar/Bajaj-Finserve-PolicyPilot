@@ -319,7 +319,7 @@ class RAGPipeline:
             embeddings=self.embedding_model,
             allow_dangerous_deserialization=True
         )
-        self.retriever = self.vectorstore.as_retriever(search_type="similarity",search_kwargs={"k":8})
+        self.retriever = self.vectorstore.as_retriever(search_type="similarity",search_kwargs={"k":12})
 
     def _save_to_cache(self):
         with open(self._get_cache_path("chunks"), 'wb') as f:
@@ -331,7 +331,7 @@ class RAGPipeline:
         self.text_chunks = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=150).split_documents(self.documents)
 
         self.vectorstore = FAISS.from_documents(self.text_chunks, self.embedding_model)
-        self.retriever = self.vectorstore.as_retriever(search_type="similarity",search_kwargs={"k":8})
+        self.retriever = self.vectorstore.as_retriever(search_type="similarity",search_kwargs={"k":12})
 
     def _initialize_llm_chains(self):
         self.llm_model = ChatGoogleGenerativeAI(
